@@ -9,33 +9,15 @@ import {
   DatePickerIOS,
   Button
 } from 'react-native'
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars'
+import { Calendar } from 'react-native-calendars'
 
 export default class MakeReservation extends React.Component {
   state = {
     name: '',
     hotelName: '',
-    dates: {
-        //  '2018-11-22': {textColor: 'white', startingDay: true, color: '#0070df'},
-        // '2018-11-24': {textColor: 'white', endingDay: true, color: '#0070df'},
-    },
+    dates: {},
     arrivalDate: '',
     departureDate: '',
-    // arrival: {
-    //   date: '',
-    //   selected: false,
-    //   endDateNotSelected: true,
-    //   textColor: 'white',
-    //   backgroundColor: 'dodgerblue'
-    // },
-    // departure: {
-    //   date: '',
-    //   textColor: 'white',
-    //   selected: false,
-    //   backgroundColor: 'dodgerblue'
-    // },
-    // isDateTimePickerVisible: false,
   }
 
   onChangeText = (key, value) => {
@@ -45,18 +27,22 @@ export default class MakeReservation extends React.Component {
   }
 
   submitReservation = () => {
-    console.log(this.state)
+    const reserveration = {
+      'name': this.state.name,
+      'hotelName': this.state.hotelName,
+      'arrivalDate': this.state.arrivalDate,
+      'departureDate': this.state.departureDate
+    }
+    console.log(reserveration)
   }
 
-  // _showDateTimePicker = () => this.setState({ isDateTimePickerVisible: true });
-
-  // _hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false });
-
-  // _handleDatePicked = (date) => {
-  //   console.log('A date has been picked: ', date);
-  //   this._hideDateTimePicker();
-  // };
-
+  /**
+   * @description for every date pressed, dayPress will do one of the following:
+   * if there is no arrival date or departure date, it will set an arrival date
+   * if there is an arrival date but no departure date, it will set a departure date.
+   * if there is an arrival and departure date, it reset the previous set dates, and set just an arrival date.
+   * @param {object} dayinfo - contains date info on the date pressed
+   */
   dayPress = (dayInfo) => {
     // Either no days selected, or both days selected. Either way, only show the recently selected date.
     if (!Object.keys(this.state.dates).length || Object.keys(this.state.dates).length > 1) {
@@ -76,7 +62,8 @@ export default class MakeReservation extends React.Component {
     // arrival day selected, but departure date has not been set yet. Set departure date.
     else {
       const dates = {};
-      // 86400000 milliseconds in a day
+      // iterate one day at a time from arrival date to departure date, making a date for each
+      // day to mark the range on the calendar. There are 86400000 milliseconds in a day
       for (let i = this.state.arrivalDate; i <= dayInfo.timestamp; i += 86400000) {
         const date = new Date(i).toISOString().slice(0, 10)
         dates[date] = {
@@ -87,18 +74,10 @@ export default class MakeReservation extends React.Component {
         }
       }
       this.setState({
-        departureDate: dayInfo.dateString,
+        departureDate: dayInfo.timestamp,
         dates
       })
     }
-
-    //  Object {
-      //  "dateString": "2018-11-14",
-      //  "day": 14,
-      //  "month": 11,
-      //  "timestamp": 1542153600000,
-      //  "year": 2018,
-    //  }
   }
   
   render() {
@@ -119,15 +98,6 @@ export default class MakeReservation extends React.Component {
           placeholderTextColor='white'
           onChangeText={hotelName => this.onChangeText('hotelName', hotelName)}
         />
-{/* https://reactnativeexample.com/a-react-native-datetime-picker-for-android-and-ios/ */}
-        {/* <TouchableOpacity onPress={this._showDateTimePicker}>
-          <Text>Show DatePicker</Text>
-        </TouchableOpacity>
-        <DateTimePicker
-          isVisible={this.state.isDateTimePickerVisible}
-          onConfirm={this._handleDatePicked}
-          onCancel={this._hideDateTimePicker}
-        /> */}
         <Calendar
           // Handler which gets executed on day press. Default = undefined
           onDayPress={this.dayPress}
@@ -139,16 +109,10 @@ export default class MakeReservation extends React.Component {
           minDate={new Date()}
            // Collection of dates that have to be colored in a special way. Default = {}
           markedDates={
-            this.state.dates
-            // '2018-11-22': {textColor: 'white', startingDay: true, color: '#0070df'},
-            // '2018-11-24': {textColor: 'white', endingDay: true, color: '#0070df'},           
+            this.state.dates        
           }
            markingType={'period'}
         />
-
-
-
-        
         <Button
           title='Submit'
           onPress={this.submitReservation}
@@ -164,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     height: 55,
-    backgroundColor: '#42A5F5',
+    backgroundColor: 'white',
     margin: 10,
     color: 'white',
     padding: 8,
@@ -173,6 +137,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center'
   }
 })
