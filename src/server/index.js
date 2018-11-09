@@ -1,21 +1,19 @@
-
 require('dotenv').config();
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
-const schema = require('./graphql-schema');
-const path = require('path');
+const schema = require('./graphql-server');
 const app = express();
 
 const mongoose = require('mongoose');
-const MongoDB = process.env.MONGO_URI || 'mongodb://localhost/graphql';
+const Mongo_URI = process.env.MONGO_URI;
+// console.log(Reservation)
 
-mongoose.connect(MongoDB, { useNewUrlParser: true }, () => console.log('connected to database'));
-
-app.use(express.static(path.join(__dirname, './public')))
+mongoose.connect(Mongo_URI, { useNewUrlParser: true });
+mongoose.connection.once('open', () => console.log('connected to database'))
 
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphiql: false //Set to true to view GraphiQl in browser at /graphql
+    graphiql: true //Set to true to view GraphiQl in browser at /graphql
 }));
 
 app.listen(4000, () => {

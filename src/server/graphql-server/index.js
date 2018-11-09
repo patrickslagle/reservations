@@ -4,10 +4,8 @@ const Reservation = require('../db/reservation.js');
 const { 
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLID,
   GraphQLString, 
   GraphQLInt, 
-  GraphQLBoolean,
   GraphQLList,
   GraphQLNonNull
 } = graphql;
@@ -57,19 +55,6 @@ const Mutation = new GraphQLObjectType({
       resolve(parent, args) {
         const reservation = new Reservation(args);
         return reservation.save();
-      }
-    },
-    updateReservation: {
-      type: ReservationType,
-      args: {
-        id: { type: GraphQLString },
-        name: { type: GraphQLString },
-        hotelName: { type: GraphQLString },
-        arrivalDate: { type: GraphQLString },
-        departureDate: { type: GraphQLString }
-      },
-      resolve(parent, args) {
-        return Reservation.findByIdAndUpdate(args.id, args);
       }
     },
     deleteReservation: {
