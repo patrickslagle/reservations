@@ -11,8 +11,8 @@ const queryReservations = `
 `
 
 const queryReservationById = `
-  query($Reservation: String!) {
-    Reservation(Reservation: $Reservation) {
+  query($id: String!) {
+    reservation(id: $id) {
       id
       name
       hotelName
