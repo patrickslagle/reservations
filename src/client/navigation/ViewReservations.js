@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 import { queryReservations, queryReservationById } from '../graphql/queries.js'
+import SearchQuery from '../components/searchBar.js'
 //https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6
 //https://medium.freecodecamp.org/how-to-build-a-react-native-flatlist-with-realtime-searching-ability-81ad100f6699
 //https://react-native-training.github.io/react-native-elements/docs/0.19.1/lists.html#hidechevron
@@ -26,13 +27,15 @@ class ViewReservations extends Component {
   }
 
   fetchReservationById = () => {
-    const url = 'http://192.168.0.161:4000/reservation/id'
-    const data = queryReservationById
-    fetch(`${url}?query=${data}?variables=${this.state.search}`)
+    const url = 'http://192.168.1.78:4000/reservation/id'
+    const queryString = queryReservationById
+    const queryVariables = `{"id": "${this.state.search}"}`
+    fetch(`${url}?query=${queryString}&variables=${queryVariables}`)
     .then(res => res.json())
     .then(res => {
+      console.log('res.data', res.data.reservation)
       this.setState({
-        data: res.data.everyReservation,
+        data: [res.data.reservation],
         error: res.error || null,
         loading: false,
         refreshing: false
@@ -42,11 +45,12 @@ class ViewReservations extends Component {
   }
 
   fetchReservations = () => {
-    const url = 'http://192.168.0.161:4000/reservations'
+    const url = 'http://192.168.1.78:4000/reservations'
     const data = queryReservations
     fetch(`${url}?query=${data}`)
     .then(res => res.json())
     .then(res => {
+      console.log(res.data)
       this.setState({
         data: res.data.everyReservation,
         error: res.error || null,
@@ -125,7 +129,10 @@ class ViewReservations extends Component {
     <SearchBar 
       placeholder="Search Reservation" 
       onChangeText={letter => this.search(letter)}
-      round />
+      onSubmitEditing={this.fetchReservationById}
+      returnKeyType='search'
+      round 
+    />
     );
   };
 
@@ -160,7 +167,7 @@ class ViewReservations extends Component {
           )}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={this.renderSeparator}
-          ListHeaderComponent={this.renderHeader}
+          ListHeaderComponent={<SearchQuery search={this.search} fetchReservationById={this.fetchReservationById}/>}
           ListFooterComponent={this.renderFooter}
           onRefresh={this.handleRefresh}
           refreshing={this.state.refreshing}
