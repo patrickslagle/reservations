@@ -7,8 +7,8 @@ import {
   Button
 } from 'react-native'
 import { Calendar } from 'react-native-calendars'
-import { graphql, compose } from 'react-apollo'
-import { addReservationMutation } from '../graphql/mutations/mutations.js'
+// import { graphql, compose } from 'react-apollo'
+import { addReservationMutation } from '../graphql/mutations.js'
 class MakeReservation extends React.Component {
   constructor(props) {
     super(props);
@@ -29,15 +29,36 @@ class MakeReservation extends React.Component {
 
   submitReservation = () => {
     console.log(this.state)
-    this.props.addReservationMutation({
-      //passing variables to the mutation
+    const url = 'http://192.168.0.161:4000/reservation'
+    const data = {
+      query: addReservationMutation,
       variables: {
         name: this.state.name,
         hotelName: this.state.hotelName,
-        arrivalDate: this.state.arrivalDate,
-        departureDate: this.state.departureDate
-      },
-    });
+        arrivalDate: `${this.state.arrivalDate}`,
+        departureDate: `${this.state.departureDate}`
+      }
+    }
+    fetch(url, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json())
+    .then(response => console.log('yasss', JSON.stringify(response)))
+    .catch(error => console.log('error', error))
+
+
+    // this.props.addReservationMutation({
+    //   //passing variables to the mutation
+    //   variables: {
+    //     name: this.state.name,
+    //     hotelName: this.state.hotelName,
+    //     arrivalDate: this.state.arrivalDate,
+    //     departureDate: this.state.departureDate
+    //   },
+    // });
     console.log('submitted') 
   }
 
@@ -146,7 +167,7 @@ const styles = StyleSheet.create({
   }
 })
 
-// export default MakeReservation;
-export default compose(
-  graphql(addReservationMutation, {name: 'addReservationMutation'})
-)(MakeReservation)
+export default MakeReservation;
+// export default compose(
+  // graphql(addReservationMutation, {name: 'addReservationMutation'})
+// )(MakeReservation)

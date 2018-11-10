@@ -1,7 +1,4 @@
-// import { gql } from 'apollo-boost';
-import gql from 'graphql-tag';
-
-const addReservationMutation = gql`
+const addReservationMutation = `
   mutation($name: String!, $hotelName: String!, $arrivalDate: String!, $departureDate: String!) {
     addReservation(name: $name, hotelName: $hotelName, arrivalDate: $arrivalDate, departureDate: $departureDate) {
       id
@@ -13,7 +10,7 @@ const addReservationMutation = gql`
   }
 `
 
-const deleteReservationMutation = gql`
+const deleteReservationMutation = `
   mutation($id: String!){
     deleteReservation(id: $id){
       id

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
+import { queryReservations } from '../graphql/queries.js'
 //https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6
 //https://medium.freecodecamp.org/how-to-build-a-react-native-flatlist-with-realtime-searching-ability-81ad100f6699
 //https://react-native-training.github.io/react-native-elements/docs/0.19.1/lists.html#hidechevron
@@ -19,7 +20,17 @@ class ViewReservations extends Component {
   }
 
   componentDidMount() {
-    this.makeRemoteRequest();
+    // this.makeRemoteRequest();
+    this.fetchReservations(); 
+  }
+
+  fetchReservations() {
+    const url = 'http://192.168.0.161:4000/reservations'
+    const data = queryReservations
+    fetch(`${url}?query=${data}`)
+    .then(res => res.json())
+    .then(response => console.log('GOT RESERVATIONS', JSON.stringify(response)))
+    .catch(error => console.log('error', error))
   }
 
   makeRemoteRequest = () => {
