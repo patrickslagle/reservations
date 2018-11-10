@@ -7,7 +7,6 @@ import {
   Button
 } from 'react-native'
 import { Calendar } from 'react-native-calendars'
-// import { graphql, compose } from 'react-apollo'
 import { addReservationMutation } from '../graphql/mutations.js'
 class MakeReservation extends React.Component {
   constructor(props) {
@@ -35,8 +34,8 @@ class MakeReservation extends React.Component {
       variables: {
         name: this.state.name,
         hotelName: this.state.hotelName,
-        arrivalDate: `${this.state.arrivalDate}`,
-        departureDate: `${this.state.departureDate}`
+        arrivalDate: `${new Date(this.state.arrivalDate).toLocaleDateString()}`,
+        departureDate: `${new Date(this.state.departureDate).toLocaleDateString()}`
       }
     }
     fetch(url, {
@@ -48,18 +47,6 @@ class MakeReservation extends React.Component {
     }).then(res => res.json())
     .then(response => console.log('yasss', JSON.stringify(response)))
     .catch(error => console.log('error', error))
-
-
-    // this.props.addReservationMutation({
-    //   //passing variables to the mutation
-    //   variables: {
-    //     name: this.state.name,
-    //     hotelName: this.state.hotelName,
-    //     arrivalDate: this.state.arrivalDate,
-    //     departureDate: this.state.departureDate
-    //   },
-    // });
-    console.log('submitted') 
   }
 
   /**
@@ -107,7 +94,6 @@ class MakeReservation extends React.Component {
   }
   
   render() {
-    console.log('props', this.props.addReservationMutation)
     return (
       <View style={styles.container}>
         <TextInput
@@ -168,6 +154,3 @@ const styles = StyleSheet.create({
 })
 
 export default MakeReservation;
-// export default compose(
-  // graphql(addReservationMutation, {name: 'addReservationMutation'})
-// )(MakeReservation)

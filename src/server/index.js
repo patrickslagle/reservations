@@ -22,6 +22,7 @@ const GraphQLServer = graphqlHTTP({
 app.get('/reservation/id', GraphQLServer);
 app.get('/reservations', GraphQLServer);
 app.post('/reservation', GraphQLServer);
+app.use('/graphql', GraphQLServer)
 
 app.listen(4000, () => {
   console.log('Listening on 4000')

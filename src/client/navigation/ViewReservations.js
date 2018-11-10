@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, ActivityIndicator } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
-import { queryReservations } from '../graphql/queries.js'
+import { queryReservations, queryReservationById } from '../graphql/queries.js'
 //https://medium.com/react-native-development/how-to-use-the-flatlist-component-react-native-basics-92c482816fe6
 //https://medium.freecodecamp.org/how-to-build-a-react-native-flatlist-with-realtime-searching-ability-81ad100f6699
 //https://react-native-training.github.io/react-native-elements/docs/0.19.1/lists.html#hidechevron
@@ -10,6 +10,7 @@ class ViewReservations extends Component {
     super(props);
 
     this.state = {
+      search: '',
       loading: false,
       data: [],
       page: 1,
@@ -24,12 +25,35 @@ class ViewReservations extends Component {
     this.fetchReservations(); 
   }
 
-  fetchReservations() {
+  fetchReservationById = () => {
+    const url = 'http://192.168.0.161:4000/reservation/id'
+    const data = queryReservationById
+    fetch(`${url}?query=${data}?variables=${this.state.search}`)
+    .then(res => res.json())
+    .then(res => {
+      this.setState({
+        data: res.data.everyReservation,
+        error: res.error || null,
+        loading: false,
+        refreshing: false
+      });
+    })
+    .catch(error => console.log('error', error))
+  }
+
+  fetchReservations = () => {
     const url = 'http://192.168.0.161:4000/reservations'
     const data = queryReservations
     fetch(`${url}?query=${data}`)
     .then(res => res.json())
-    .then(response => console.log('GOT RESERVATIONS', JSON.stringify(response)))
+    .then(res => {
+      this.setState({
+        data: res.data.everyReservation,
+        error: res.error || null,
+        loading: false,
+        refreshing: false
+      });
+    })
     .catch(error => console.log('error', error))
   }
 
@@ -55,27 +79,27 @@ class ViewReservations extends Component {
   };
 
   handleRefresh = () => {
-    this.setState(
-      {
-        page: 1,
-        seed: this.state.seed + 1,
-        refreshing: true
-      },
-      () => {
-        this.makeRemoteRequest();
-      }
-    );
+    // this.setState(
+    //   {
+    //     page: 1,
+    //     seed: this.state.seed + 1,
+    //     refreshing: true
+    //   },
+    //   () => {
+    //     this.makeRemoteRequest();
+    //   }
+    // );
   };
 
   handleLoadMore = () => {
-    this.setState(
-      {
-        page: this.state.page + 1
-      },
-      () => {
-        this.makeRemoteRequest();
-      }
-    );
+    // this.setState(
+    //   {
+    //     page: this.state.page + 1
+    //   },
+    //   () => {
+    //     this.makeRemoteRequest();
+    //   }
+    // );
   };
 
   renderSeparator = () => {
@@ -91,8 +115,18 @@ class ViewReservations extends Component {
     );
   };
 
+  search = (value) => {
+    this.setState({ search: value })
+    console.log('hi', value)
+  }
+
   renderHeader = () => {
-    return <SearchBar placeholder="Search Reservation" round />;
+    return (
+    <SearchBar 
+      placeholder="Search Reservation" 
+      onChangeText={letter => this.search(letter)}
+      round />
+    );
   };
 
   renderFooter = () => {
@@ -118,15 +152,13 @@ class ViewReservations extends Component {
           data={this.state.data}
           renderItem={({ item }) => (
             <ListItem
-              // roundAvatar
-              title={`${item.name.first} ${item.name.last}`}
-              subtitle={item.email}
+              title={`${item.name} (${item.id})`}
+              subtitle={`${item.hotelName} (${item.arrivalDate} - ${item.departureDate})`}
               hideChevron={true}
-              // avatar={{ uri: item.picture.thumbnail }}
               containerStyle={{ borderBottomWidth: 0 }}
             />
           )}
-          keyExtractor={item => item.email}
+          keyExtractor={item => item.id}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           ListFooterComponent={this.renderFooter}
