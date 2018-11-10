@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-const queryEveryReservation = gql`
+const reservations = gql`
   {
     everyReservation {
       id
@@ -12,7 +12,7 @@ const queryEveryReservation = gql`
   }
 `
 
-const queryReservationById = gql`
+const reservationById = gql`
   query($Reservation: String!) {
     Reservation(Reservation: $Reservation) {
       id
@@ -24,4 +24,4 @@ const queryReservationById = gql`
   }
 `
 
-export { queryEveryReservation, queryReservationById };
+export { reservations, reservationById };

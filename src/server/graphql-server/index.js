@@ -49,8 +49,8 @@ const Mutation = new GraphQLObjectType({
         id: { type: GraphQLString },
         name: { type: new GraphQLNonNull(GraphQLString) },
         hotelName: { type: new GraphQLNonNull(GraphQLString) },
-        arrivalDate: { type: new GraphQLNonNull(GraphQLString) },
-        departureDate: { type: new GraphQLNonNull(GraphQLString) }
+        arrivalDate: { type: new GraphQLNonNull(GraphQLInt) },
+        departureDate: { type: new GraphQLNonNull(GraphQLInt) }
       },
       resolve(parent, args) {
         const reservation = new Reservation(args);

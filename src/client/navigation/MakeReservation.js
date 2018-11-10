@@ -4,20 +4,21 @@ import {
   View,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
-  Text,
-  DatePickerIOS,
   Button
 } from 'react-native'
 import { Calendar } from 'react-native-calendars'
-
-export default class MakeReservation extends React.Component {
-  state = {
-    name: '',
-    hotelName: '',
-    dates: {},
-    arrivalDate: '',
-    departureDate: '',
+import { graphql, compose } from 'react-apollo'
+import { addReservationMutation } from '../graphql/mutations/mutations.js'
+class MakeReservation extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      hotelName: '',
+      dates: {},
+      arrivalDate: 'h',
+      departureDate: 'h',
+    }
   }
 
   onChangeText = (key, value) => {
@@ -27,13 +28,17 @@ export default class MakeReservation extends React.Component {
   }
 
   submitReservation = () => {
-    const reserveration = {
-      'name': this.state.name,
-      'hotelName': this.state.hotelName,
-      'arrivalDate': this.state.arrivalDate,
-      'departureDate': this.state.departureDate
-    }
-    console.log(reserveration)
+    console.log(this.state)
+    this.props.addReservationMutation({
+      //passing variables to the mutation
+      variables: {
+        name: this.state.name,
+        hotelName: this.state.hotelName,
+        arrivalDate: this.state.arrivalDate,
+        departureDate: this.state.departureDate
+      },
+    });
+    console.log('submitted') 
   }
 
   /**
@@ -81,6 +86,7 @@ export default class MakeReservation extends React.Component {
   }
   
   render() {
+    console.log('props', this.props.addReservationMutation)
     return (
       <View style={styles.container}>
         <TextInput
@@ -139,3 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   }
 })
+
+// export default MakeReservation;
+export default compose(
+  graphql(addReservationMutation, {name: 'addReservationMutation'})
+)(MakeReservation)

@@ -1,4 +1,5 @@
-import { gql } from 'apollo-boost';
+// import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 
 const addReservationMutation = gql`
   mutation($name: String!, $hotelName: String!, $arrivalDate: String!, $departureDate: String!) {
@@ -12,19 +13,7 @@ const addReservationMutation = gql`
   }
 `
 
-const updateReservationMutation = gql`
-  mutation($id: String!, $name: String!, $hotelName: String!, $arrivalDate: String!, $departureDate: String!) {
-    updateReservation(id: $id, name: $name, hotelName: $hotelName, arrivalDate: $arrivalDate, departureDate: $departureDate) {
-      id
-      name
-      hotelName
-      arrivalDate
-      departureDate
-    }
-  }
-`
-
-const deleteReservationMutation = gpq`
+const deleteReservationMutation = gql`
   mutation($id: String!){
     deleteReservation(id: $id){
       id
@@ -38,6 +27,5 @@ const deleteReservationMutation = gpq`
 
 export {
   addReservationMutation,
-  updateReservationMutation,
   deleteReservationMutation,
 };
