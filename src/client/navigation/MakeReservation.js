@@ -1,4 +1,3 @@
-// SignIn.js
 import React from 'react'
 import {
   View,
@@ -6,8 +5,8 @@ import {
   TextInput,
   Button
 } from 'react-native'
-import { Calendar } from 'react-native-calendars'
 import { addReservationMutation } from '../graphql/mutations.js'
+import Calendar from '../components/Calender.js'
 class MakeReservation extends React.Component {
   constructor(props) {
     super(props);
@@ -15,8 +14,9 @@ class MakeReservation extends React.Component {
       name: '',
       hotelName: '',
       dates: {},
-      arrivalDate: 'h',
-      departureDate: 'h',
+      arrivalDate: '',
+      departureDate: '',
+      calendar: false
     }
   }
 
@@ -28,7 +28,7 @@ class MakeReservation extends React.Component {
 
   submitReservation = () => {
     console.log(this.state)
-    const url = 'http://192.168.0.161:4000/reservation'
+    const url = 'http://192.168.1.78:4000/reservation'
     const data = {
       query: addReservationMutation,
       variables: {
@@ -57,6 +57,7 @@ class MakeReservation extends React.Component {
    * @param {object} dayinfo - contains date info on the date pressed
    */
   dayPress = (dayInfo) => {
+    console.log('DAY PRESS', dayInfo)
     // Either no days selected, or both days selected. Either way, only show the recently selected date.
     if (!Object.keys(this.state.dates).length || Object.keys(this.state.dates).length > 1) {
       this.setState({
@@ -92,40 +93,51 @@ class MakeReservation extends React.Component {
       })
     }
   }
+
+  renderCalendar(){
+    if (!this.state.calendar) return null
+
+    return (
+      <Calendar
+        dayPress={this.dayPress}
+        dates={this.state.dates}
+      />
+    )
+  }
+
+  toggleCalender(){
+    this.setState({
+      calendar: !this.state.calendar
+    })
+  }
+  
   
   render() {
+    console.log(this.state.arrivalDate)
+    console.log('IN COMP', this.state.dates)
     return (
       <View style={styles.container}>
         <TextInput
           style={styles.input}
+          onFocus={this.randomFunc}
           placeholder='Name'
-          autoCapitalize="none"
+          autoCapitalize="words"
           autoCorrect={false}
-          placeholderTextColor='white'
+          placeholderTextColor='black'
           onChangeText={customerName => this.onChangeText('name', customerName)}
         />
         <TextInput
           style={styles.input}
           placeholder='Hotel Name'
-          autoCapitalize="none"
-          placeholderTextColor='white'
+          autoCapitalize="words"
+          placeholderTextColor='black'
           onChangeText={hotelName => this.onChangeText('hotelName', hotelName)}
         />
-        <Calendar
-          // Handler which gets executed on day press. Default = undefined
-          onDayPress={this.dayPress}
-          // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
-          monthFormat={'MMM yyyy'}
-          // do not switch month when tapping on greyed out day from another month. Default = false
-          disableMonthChange={true}
-           // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
-          minDate={new Date()}
-           // Collection of dates that have to be colored in a special way. Default = {}
-          markedDates={
-            this.state.dates        
-          }
-           markingType={'period'}
+        <Button
+          onPress={() => this.toggleCalender()}
+          title="Dates"
         />
+        {this.renderCalendar()}
         <Button
           title='Submit'
           onPress={this.submitReservation}
