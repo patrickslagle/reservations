@@ -4,6 +4,8 @@ import { addReservationMutation } from '../graphql/mutations.js'
 import Calendar from '../components/Calendar.js'
 import TxtInput from '../components/TextInput.js'
 import Button from '../components/Button.js'
+import { IP_Address } from 'react-native-dotenv'
+
 class MakeReservation extends React.Component {
   constructor(props) {
     super(props);
@@ -52,9 +54,9 @@ class MakeReservation extends React.Component {
         [{text: 'OK'}],
       )
     } 
-    // if form is complete, send to server to add
+    // if form is complete, send information to server to add reservation
     else {
-      const IPAddress = `192.168.1.78`
+      const IPAddress = '192.168.1.78';
       const url = `http://${IPAddress}:4000/reservation`
       const data = {
         query: addReservationMutation,

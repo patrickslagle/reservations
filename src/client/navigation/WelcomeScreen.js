@@ -5,6 +5,13 @@ import{
   Button
 } from 'react-native';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 class WelcomeScreen extends Component {
   render() {
     return (
@@ -19,22 +26,3 @@ class WelcomeScreen extends Component {
 }
 
 export default WelcomeScreen;
-
-const styles = StyleSheet.create({
-  // input: {
-  //   width: 350,
-  //   fontSize: 18,
-  //   fontWeight: '500',
-  //   height: 55,
-  //   backgroundColor: 'white',
-  //   margin: 10,
-  //   color: 'white',
-  //   padding: 8,
-  //   borderRadius: 14
-  // },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  }
-})
