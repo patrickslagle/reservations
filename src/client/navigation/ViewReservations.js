@@ -40,6 +40,9 @@ class ViewReservations extends Component {
     .catch(error => console.log('error', error))
   }
 
+  /**
+   * sends a GraphQL query to the server to retrieve all reservations
+   */
   fetchReservations = () => {
     const IPAddress = '192.168.1.78';
     const url = `http://${IPAddress}:4000/reservation`
@@ -57,6 +60,9 @@ class ViewReservations extends Component {
     .catch(error => console.log('error', error))
   }
 
+  /**
+   * @description creates the line separator between reservations
+   */
   renderSeparator = () => {
     return (
       <View
@@ -70,7 +76,10 @@ class ViewReservations extends Component {
     );
   };
 
-
+  /**
+   * @description updates search in this.state with every press into the text input
+   * @param {String} value - the new value of the text input
+   */
   onTextChange = (value) => {
     this.setState({ search: value })
   }
