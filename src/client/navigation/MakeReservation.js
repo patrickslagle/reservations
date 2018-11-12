@@ -4,7 +4,6 @@ import { addReservationMutation } from '../graphql/mutations.js'
 import Calendar from '../components/Calendar.js'
 import TxtInput from '../components/TextInput.js'
 import Button from '../components/Button.js'
-import { IP_Address } from 'react-native-dotenv'
 
 class MakeReservation extends React.Component {
   constructor(props) {
