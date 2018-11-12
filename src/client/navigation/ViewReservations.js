@@ -41,11 +41,11 @@ class ViewReservations extends Component {
   }
 
   /**
-   * sends a GraphQL query to the server to retrieve all reservations
+   * @description sends a GraphQL query to the server to retrieve all reservations
    */
   fetchReservations = () => {
     const IPAddress = '192.168.1.78';
-    const url = `http://${IPAddress}:4000/reservation`
+    const url = `http://${IPAddress}:4000/reservations`
     const data = queryReservations
     fetch(`${url}?query=${data}`)
     .then(res => res.json())

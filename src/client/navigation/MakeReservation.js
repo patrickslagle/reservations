@@ -72,16 +72,6 @@ class MakeReservation extends React.Component {
         headers: {
           'Content-Type': 'application/json'
         }
-      }).then(res => res.json())
-      .then(response => {
-        console.log('yasss', JSON.stringify(response))
-        this.setState({
-          name: '',
-          hotelName: '',
-          arrivalDate: null,
-          departureDate: null,
-          showCalendar: false
-        })
       })
       .catch(error => console.log('error', error))
     }
