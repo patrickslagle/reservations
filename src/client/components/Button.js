@@ -5,6 +5,18 @@ import {
   StyleSheet 
 } from 'react-native'
 
+const styles = StyleSheet.create({
+  buttonStyle: {
+    backgroundColor: 'dodgerblue',
+    margin: 10
+  },
+  buttonText: {
+    color: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+    padding: 5
+  }
+})
 class Button extends React.PureComponent {
   constructor(props){
     super(props)
@@ -20,18 +32,5 @@ class Button extends React.PureComponent {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  buttonStyle: {
-    backgroundColor: 'dodgerblue',
-    margin: 10
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 20,
-    textAlign: 'center',
-    padding: 5
-  }
-})
 
 export default Button;

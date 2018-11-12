@@ -1,50 +1,20 @@
-import React, {Component} from 'react';
-import{
-  View,
-  StyleSheet,
-  Image,
-  Text
-} from 'react-native';
+import React from 'react';
+import { ListItem } from "react-native-elements";
 
-class Reservation extends Component {
+class Reservation extends React.PureComponent {
+  constructor(props) {
+    super(props)
+  }
   render() {
     return (
-      <View style={styles.container}>
-        <Image 
-          source={require('../assets/hotel4.jpg')}
-          style={styles.hotelPic}
-        />
-        <Text>Epic Hotels</Text>
-        <Text>Patrick Slagle</Text>
-        <Text>Nov 11 - Nov 20</Text>
-      </View>
+      <ListItem
+        title={`${this.props.item.name} (${this.props.item.id})`}
+        subtitle={`${this.props.item.hotelName} (${this.props.item.arrivalDate} - ${this.props.item.departureDate})`}
+        hideChevron={true}
+        containerStyle={{ borderBottomWidth: 0 }}
+      />
     )
   }
 }
 
 export default Reservation;
-
-const styles = StyleSheet.create({
-  // input: {
-  //   width: 350,
-  //   fontSize: 18,
-  //   fontWeight: '500',
-  //   height: 55,
-  //   backgroundColor: '#42A5F5',
-  //   margin: 10,
-  //   color: 'white',
-  //   padding: 8,
-  //   borderRadius: 14
-  // },
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    // height: '100%'
-  },
-  hotelPic: {
-    width: '80%',
-    // height: '60%'
-  },
-})

@@ -9,7 +9,7 @@ class SearchQuery extends React.PureComponent {
     return (
       <SearchBar 
         placeholder="Search Reservation" 
-        onChangeText={letter => this.props.search(letter)}
+        onChangeText={text => this.props.onTextChange(text)}
         onSubmitEditing={this.props.fetchReservationById}
         returnKeyType='search'
         round 

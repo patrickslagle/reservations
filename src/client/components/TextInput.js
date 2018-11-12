@@ -1,6 +1,18 @@
 import React from 'react';
 import { TextInput, StyleSheet } from 'react-native'
 
+const styles = StyleSheet.create({
+  input: {
+    width: 350,
+    fontSize: 18,
+    fontWeight: '500',
+    height: 55,
+    backgroundColor: 'white',
+    margin: 10,
+    padding: 8,
+    borderRadius: 14
+  }
+})
 class TxtInput extends React.PureComponent {
   constructor(props){
     super(props)
@@ -18,18 +30,5 @@ class TxtInput extends React.PureComponent {
     )
   }
 }
-
-const styles = StyleSheet.create({
-  input: {
-    width: 350,
-    fontSize: 18,
-    fontWeight: '500',
-    height: 55,
-    backgroundColor: 'white',
-    margin: 10,
-    padding: 8,
-    borderRadius: 14
-  }
-})
 
 export default TxtInput;
