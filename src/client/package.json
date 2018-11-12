@@ -28,7 +28,7 @@
     "jest-expo": "~27.0.0",
     "react-native-scripts": "1.14.0"
   },
-  "description": "This project was bootstrapped with [Create React Native App](https://github.com/react-community/create-react-native-app).",
+  "description": "simple application to make and view reservations",
   "author": "",
   "license": "ISC"
 }
